@@ -4,7 +4,7 @@ import (
 	"image"
 	"testing"
 
-	"periph.io/x/devices/v3/ssd1322/image4bit"
+	"github.com/flavioheleno/ssd1322/image4bit"
 )
 
 func TestOptsValidation(t *testing.T) {

@@ -17,7 +17,7 @@ import (
 	"periph.io/x/conn/v3"
 	"periph.io/x/conn/v3/gpio"
 	"periph.io/x/conn/v3/spi"
-	"periph.io/x/devices/v3/ssd1322/image4bit"
+	"github.com/flavioheleno/ssd1322/image4bit"
 )
 
 // Opts is the configuration for the SSD1322 display.

@@ -38,8 +38,8 @@ import (
 
 	"periph.io/x/conn/v3/gpio/gpioreg"
 	"periph.io/x/conn/v3/spi/spireg"
-	"periph.io/x/devices/v3/ssd1322"
-	"periph.io/x/devices/v3/ssd1322/image4bit"
+	"github.com/flavioheleno/ssd1322"
+	"github.com/flavioheleno/ssd1322/image4bit"
 	"periph.io/x/host/v3"
 )
 
