@@ -69,6 +69,25 @@ func main() {
 }
 ```
 
+### Using Hardware Reset Pin (Optional)
+
+If your display has a reset (RST) pin connected to GPIO, you can provide it for clean hardware initialization:
+
+```go
+// Get reset pin
+rstPin := gpioreg.ByName("GPIO25")
+
+// Create display with reset pin
+dev, _ := ssd1322.NewSPI(spiBus, dcPin, &ssd1322.Opts{
+	W:   256,
+	H:   64,
+	RST: rstPin,  // Optional reset pin
+})
+defer dev.Halt()
+```
+
+The driver automatically performs a hardware reset sequence (pull RST low for 200ms, then high for 200ms) during initialization. If RST is not provided, the driver skips hardware reset and relies on power-on reset.
+
 ## Hardware Connection
 
 ### Wiring (Raspberry Pi Example)
@@ -81,7 +100,7 @@ SCL/CLK        GPIO11 (SPI0 CLK)
 SDA/MOSI       GPIO10 (SPI0 MOSI)
 DC             GPIO25 (configurable)
 CS             GPIO8 (SPI0 CE0) or GND
-RES (optional) Any GPIO (not required, can tie to VCC)
+RES (optional) Any GPIO or VCC (use GPIO for controlled reset, see example above)
 ```
 
 ## Display Resolutions

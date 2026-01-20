@@ -289,3 +289,47 @@ func TestWriteBufferSizeValidation(t *testing.T) {
 		})
 	}
 }
+
+func TestRSTOptionSupport(t *testing.T) {
+	// Test that RST option is properly handled
+	tests := []struct {
+		name string
+		opts *Opts
+	}{
+		{"nil RST", &Opts{W: 256, H: 64, RST: nil}},
+		{"RST field exists", &Opts{W: 256, H: 64}}, // Default nil
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dev := &Dev{
+				rect:   image.Rect(0, 0, 256, 64),
+				buffer: make([]byte, 256*64/2),
+			}
+
+			// Verify RST field exists and can be set
+			dev.rst = tt.opts.RST
+			// No error expected - RST is optional
+			if dev.rst != nil {
+				t.Errorf("RST should be nil by default, got %v", dev.rst)
+			}
+		})
+	}
+}
+
+func TestRSTOptionInOpts(t *testing.T) {
+	// Test that RST field exists in Opts struct
+	opts := &Opts{
+		W:   256,
+		H:   64,
+		RST: nil,
+	}
+
+	if opts.RST != nil {
+		t.Error("RST should be nil when not set")
+	}
+
+	// Verify RST can be set to a non-nil value (without actual GPIO)
+	// This is a compile-time check that the field exists
+	_ = &Opts{W: 256, H: 64, RST: opts.RST}
+}

@@ -23,7 +23,7 @@
 //	SDA/MOSI    → SPI Data (MOSI)
 //	DC          → GPIO (any available pin)
 //	CS          → SPI Chip Select (or GND if always selected)
-//	RES         → Optional: GPIO for hardware reset (or GND if pulled up)
+//	RES         → Optional: GPIO for hardware reset
 //
 // # Basic Usage
 //
@@ -71,6 +71,23 @@
 //		// Display the image
 //		dev.Draw(dev.Bounds(), img, image.Point{})
 //	}
+//
+// # Using Hardware Reset Pin (Optional)
+//
+// If your display has a reset (RST) pin connected to a GPIO, you can provide it
+// in the Opts struct for clean hardware initialization:
+//
+//	rstPin := gpioreg.ByName("GPIO25")
+//
+//	dev, _ := ssd1322.NewSPI(spiBus, dcPin, &ssd1322.Opts{
+//		W:   256,
+//		H:   64,
+//		RST: rstPin,  // Optional reset pin
+//	})
+//
+// The driver will automatically perform a hardware reset sequence (pull RST low,
+// wait 200ms, pull high, wait 200ms) during initialization. If RST is nil or not
+// provided, the driver skips the hardware reset and relies on power-on reset.
 //
 // # Drawing Modes
 //

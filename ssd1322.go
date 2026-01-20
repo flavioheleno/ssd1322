@@ -13,6 +13,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"time"
 
 	"periph.io/x/conn/v3"
 	"periph.io/x/conn/v3/gpio"
@@ -30,13 +31,17 @@ type Opts struct {
 	Rotated       bool // 180° rotation
 	Sequential    bool // Sequential COM pin configuration
 	SwapTopBottom bool // Swap top/bottom display halves
+
+	// Optional hardware reset pin
+	RST gpio.PinIO // Reset pin (optional, nil if not used)
 }
 
 // Dev is the device handle for the SSD1322 display.
 type Dev struct {
 	// Communication
-	c  conn.Conn   // SPI connection
-	dc gpio.PinOut // Data/Command pin
+	c   conn.Conn   // SPI connection
+	dc  gpio.PinOut // Data/Command pin
+	rst gpio.PinIO  // Reset pin (optional)
 
 	// Display geometry
 	rect         image.Rectangle
@@ -86,6 +91,7 @@ func NewSPI(p spi.Port, dc gpio.PinOut, opts *Opts) (*Dev, error) {
 	d := &Dev{
 		c:              c,
 		dc:             dc,
+		rst:            opts.RST,
 		rect:           image.Rect(0, 0, opts.W, opts.H),
 		columnOffset:   (480 - opts.W) / 2,
 		buffer:         make([]byte, opts.W*opts.H/2),
@@ -105,6 +111,19 @@ func NewSPI(p spi.Port, dc gpio.PinOut, opts *Opts) (*Dev, error) {
 
 // init sends the initialization sequence to the display.
 func (d *Dev) init(opts *Opts) error {
+	// Hardware reset sequence (if RST pin is provided)
+	if d.rst != nil {
+		if err := d.rst.Out(gpio.Low); err != nil {
+			return fmt.Errorf("ssd1322: failed to pull RST low: %w", err)
+		}
+		time.Sleep(200 * time.Millisecond)
+
+		if err := d.rst.Out(gpio.High); err != nil {
+			return fmt.Errorf("ssd1322: failed to pull RST high: %w", err)
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
+
 	// Build initialization command sequence
 	cmds := []byte{
 		0xFD, 0x12, // Unlock command codes
