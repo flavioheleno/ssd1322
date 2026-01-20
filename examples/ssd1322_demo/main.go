@@ -25,7 +25,6 @@
 //	go get periph.io/x/host/cmd/...
 //	go get periph.io/x/conn/v3
 //	go get periph.io/x/devices/v3
-//
 package main
 
 import (
@@ -36,20 +35,20 @@ import (
 	"log"
 	"time"
 
-	"periph.io/x/conn/v3/gpio/gpioreg"
-	"periph.io/x/conn/v3/spi/spireg"
 	"github.com/flavioheleno/ssd1322"
 	"github.com/flavioheleno/ssd1322/image4bit"
+	"periph.io/x/conn/v3/gpio/gpioreg"
+	"periph.io/x/conn/v3/spi/spireg"
 	"periph.io/x/host/v3"
 )
 
 var (
-	width      = flag.Int("width", 256, "Display width in pixels")
-	height     = flag.Int("height", 64, "Display height in pixels")
-	spiBus     = flag.String("spi", "", "SPI bus name (empty for default)")
-	dcPin      = flag.String("dc", "GPIO25", "Data/Command pin name")
-	demoMode   = flag.String("demo", "all", "Demo to run: all, gradient, patterns, scroll, contrast")
-	spiHz      = flag.Int("hz", 10000000, "SPI frequency in Hz")
+	width    = flag.Int("width", 256, "Display width in pixels")
+	height   = flag.Int("height", 64, "Display height in pixels")
+	spiBus   = flag.String("spi", "", "SPI bus name (empty for default)")
+	dcPin    = flag.String("dc", "GPIO25", "Data/Command pin name")
+	demoMode = flag.String("demo", "all", "Demo to run: all, gradient, patterns, scroll, contrast")
+	spiHz    = flag.Int("hz", 10000000, "SPI frequency in Hz")
 )
 
 func main() {

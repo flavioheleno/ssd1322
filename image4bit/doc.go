@@ -5,11 +5,11 @@
 //
 // Memory layout example for a 4-pixel row:
 //
-//     Pixels: 0  1  2  3
-//     Values: 5  10 3  12
-//     Bytes:  0x5A     0x3C
-//             (0x5A = high nibble: 5, low nibble: A=10)
-//             (0x3C = high nibble: 3, low nibble: C=12)
+//	Pixels: 0  1  2  3
+//	Values: 5  10 3  12
+//	Bytes:  0x5A     0x3C
+//	        (0x5A = high nibble: 5, low nibble: A=10)
+//	        (0x3C = high nibble: 3, low nibble: C=12)
 //
 // This package provides:
 //
@@ -19,16 +19,16 @@
 //
 // Example usage:
 //
-//     // Create a 256x64 image
-//     img := image4bit.NewHorizontalNibble(image.Rect(0, 0, 256, 64))
+//	// Create a 256x64 image
+//	img := image4bit.NewHorizontalNibble(image.Rect(0, 0, 256, 64))
 //
-//     // Set a pixel to gray level 8
-//     img.SetGray4(10, 20, image4bit.Gray4{Y: 8})
+//	// Set a pixel to gray level 8
+//	img.SetGray4(10, 20, image4bit.Gray4{Y: 8})
 //
-//     // Get a pixel
-//     gray := img.Gray4At(10, 20)
-//     println(gray.Y)  // Output: 8
+//	// Get a pixel
+//	gray := img.Gray4At(10, 20)
+//	println(gray.Y)  // Output: 8
 //
-//     // Use with standard Go image operations
-//     draw.Draw(img, img.Bounds(), image.NewUniform(image4bit.Gray4{Y: 15}), image.Point{}, draw.Src)
+//	// Use with standard Go image operations
+//	draw.Draw(img, img.Bounds(), image.NewUniform(image4bit.Gray4{Y: 15}), image.Point{}, draw.Src)
 package image4bit

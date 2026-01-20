@@ -122,14 +122,14 @@ func TestDevHalt(t *testing.T) {
 
 func TestDevColumnOffset(t *testing.T) {
 	tests := []struct {
-		name      string
-		width     int
+		name       string
+		width      int
 		wantOffset int
 	}{
-		{"256 width", 256, 112},  // (480 - 256) / 2 = 112
-		{"128 width", 128, 176},  // (480 - 128) / 2 = 176
+		{"256 width", 256, 112}, // (480 - 256) / 2 = 112
+		{"128 width", 128, 176}, // (480 - 128) / 2 = 176
 		{"480 width (full)", 480, 0},
-		{"64 width", 64, 208},    // (480 - 64) / 2 = 208
+		{"64 width", 64, 208}, // (480 - 64) / 2 = 208
 	}
 
 	for _, tt := range tests {
@@ -261,11 +261,11 @@ func TestScrollSpeed(t *testing.T) {
 
 func TestWriteBufferSizeValidation(t *testing.T) {
 	tests := []struct {
-		name        string
-		width       int
-		height      int
-		bufferSize  int
-		wantErrMsg  string
+		name       string
+		width      int
+		height     int
+		bufferSize int
+		wantErrMsg string
 	}{
 		{"256x64 too small", 256, 64, 256*64/2 - 1, "ssd1322: invalid buffer size"},
 		{"256x64 too large", 256, 64, 256*64/2 + 1, "ssd1322: invalid buffer size"},

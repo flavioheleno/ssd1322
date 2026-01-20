@@ -15,10 +15,10 @@ import (
 	"image/draw"
 	"time"
 
+	"github.com/flavioheleno/ssd1322/image4bit"
 	"periph.io/x/conn/v3"
 	"periph.io/x/conn/v3/gpio"
 	"periph.io/x/conn/v3/spi"
-	"github.com/flavioheleno/ssd1322/image4bit"
 )
 
 // Opts is the configuration for the SSD1322 display.
@@ -48,9 +48,9 @@ type Dev struct {
 	columnOffset int // For centering on 480-column RAM
 
 	// Pixel buffers
-	buffer []byte                            // Current frame
-	next   *image4bit.HorizontalNibble       // For lazy double buffering
-	lastDm image4bit.HorizontalNibble        // Last displayed frame for differential updates
+	buffer []byte                      // Current frame
+	next   *image4bit.HorizontalNibble // For lazy double buffering
+	lastDm image4bit.HorizontalNibble  // Last displayed frame for differential updates
 
 	// Change tracking
 	minCol, maxCol int
@@ -89,16 +89,16 @@ func NewSPI(p spi.Port, dc gpio.PinOut, opts *Opts) (*Dev, error) {
 
 	// Create device
 	d := &Dev{
-		c:              c,
-		dc:             dc,
-		rst:            opts.RST,
-		rect:           image.Rect(0, 0, opts.W, opts.H),
-		columnOffset:   (480 - opts.W) / 2,
-		buffer:         make([]byte, opts.W*opts.H/2),
-		minCol:         0,
-		maxCol:         opts.W - 1,
-		minRow:         0,
-		maxRow:         opts.H - 1,
+		c:            c,
+		dc:           dc,
+		rst:          opts.RST,
+		rect:         image.Rect(0, 0, opts.W, opts.H),
+		columnOffset: (480 - opts.W) / 2,
+		buffer:       make([]byte, opts.W*opts.H/2),
+		minCol:       0,
+		maxCol:       opts.W - 1,
+		minRow:       0,
+		maxRow:       opts.H - 1,
 	}
 
 	// Initialize the display
@@ -153,7 +153,7 @@ func (d *Dev) init(opts *Opts) error {
 		0xB4, 0xA0, 0xFD, // VSL (display enhancement)
 		0xC1, 0xFF, // Contrast (max)
 		0xC7, 0x0F, // Master contrast
-		0xB9, // Use default grayscale table
+		0xB9,       // Use default grayscale table
 		0xB1, 0xE2, // Phase length
 		0xD1, 0x82, 0x20, // Display enhancements
 		0xBB, 0x1F, // Pre-charge voltage
@@ -184,7 +184,7 @@ func (d *Dev) clearRAM() error {
 
 	// Set row address window
 	commands := []byte{
-		0x15, colStart, colEnd,     // Column address
+		0x15, colStart, colEnd, // Column address
 		0x75, 0, byte(d.rect.Dy() - 1), // Row address
 		0x5C, // Enable write to RAM
 	}
@@ -227,7 +227,7 @@ func (d *Dev) writeRect(x, y, width, height int, pixels []byte) error {
 
 	// Set addressing window and enable RAM write
 	commands := []byte{
-		0x15, colStart, colEnd,     // Column address
+		0x15, colStart, colEnd, // Column address
 		0x75, byte(y), byte(y + height - 1), // Row address
 		0x5C, // Enable write to RAM
 	}
@@ -473,7 +473,7 @@ func (d *Dev) ScrollHorizontal(startRow, endRow byte, speed ScrollSpeed, right b
 		byte(speed), // Scroll speed
 		endRow,      // End row
 		0x00, 0x00,  // Dummy bytes
-		0x2F,        // Activate scroll
+		0x2F, // Activate scroll
 	})
 }
 

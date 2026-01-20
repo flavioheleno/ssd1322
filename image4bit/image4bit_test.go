@@ -55,11 +55,11 @@ func TestGray4ModelConvert(t *testing.T) {
 
 func TestNewHorizontalNibble(t *testing.T) {
 	tests := []struct {
-		name      string
-		rect      image.Rectangle
-		wantPanic bool
-		wantW     int
-		wantH     int
+		name       string
+		rect       image.Rectangle
+		wantPanic  bool
+		wantW      int
+		wantH      int
 		wantStride int
 		wantPixLen int
 	}{
