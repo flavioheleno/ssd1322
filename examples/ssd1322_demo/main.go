@@ -107,7 +107,7 @@ func main() {
 
 // runAllDemos runs all demonstrations sequentially
 func runAllDemos(dev *ssd1322.Dev) {
-	fmt.Println("\n=== Running All Demos ===\n")
+	fmt.Println("\n=== Running All Demos ===")
 
 	fmt.Println("1. Gradient Demo (5 seconds)")
 	runGradientDemo(dev)
