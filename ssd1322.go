@@ -263,7 +263,8 @@ func (d *Dev) Draw(dst image.Rectangle, src image.Image, sp image.Point) error {
 
 	// Fast path: if source is already HorizontalNibble at full size
 	if srcImg, ok := src.(*image4bit.HorizontalNibble); ok {
-		if dst == d.rect && sp == image.Point{} && srcImg.Rect == d.rect {
+		zeroPoint := image.Point{}
+		if dst == d.rect && sp == zeroPoint && srcImg.Rect == d.rect {
 			return d.writeFullFrame(srcImg.Pix)
 		}
 	}
